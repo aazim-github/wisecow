@@ -2,13 +2,13 @@
 FROM alpine:latest
 
 # Create app directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Install necessary dependencies
 RUN sudo apt install fortune-mod cowsay -y
 
 # Copy the wisecow.sh script to the container
-COPY . /app
+COPY . /usr/src/app
 
 # Make the script executable
 RUN chmod +x /wisecow.sh

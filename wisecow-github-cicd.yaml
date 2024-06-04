@@ -1,0 +1,71 @@
+name: CI/CD for Wisecow Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker Image
+      run: docker build . -t auazzmiam@gmail.com/wisecow:latest
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Push Docker Image
+      run: docker push auazzmiam@gmail.com/wisecow:latest
+
+    - name: Deploy to Kubernetes
+      uses: Azure/k8s-deploy@v1
+      with:
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+        namespace: default
+        manifests: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: wisecow-deployment
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: wisecow
+            template:
+              metadata:
+                labels:
+                  app: wisecow
+              spec:
+                containers:
+                - name: wisecow
+                  image: auazzmiam@gmail.com/wisecow:latest
+                  ports:
+                  - containerPort: 4499
+---
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: wisecow-service
+          spec:
+            selector:
+              app: wisecow
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 4499
+            type: LoadBalancer
