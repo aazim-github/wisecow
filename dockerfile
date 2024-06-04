@@ -1,5 +1,5 @@
 # Use the official Alpine image
-FROM ubuntu:18.04
+FROM alpine:latest
 
 # Create app directory
 WORKDIR /usr/src/app
