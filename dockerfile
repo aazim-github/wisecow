@@ -5,7 +5,7 @@ FROM alpine:latest
 WORKDIR /usr/src/app
 
 # Install necessary dependencies
-RUN apt-get update && apt-get install -y sudo
+RUN sudo apt-get update && apt-get install -y sudo
 RUN sudo apt install fortune-mod cowsay -y
 
 # Copy the wisecow.sh script to the container
