@@ -5,17 +5,18 @@ FROM ubuntu:18.04
 WORKDIR /usr/src/app
 
 # Install necessary dependencies
-RUN /bin/sh -c sudo apt-get install -y
-RUN /bin/sh -c sudo apt install fortune-mod cowsay -y
+SHELL ["/bin/sh", "-c", "sudo apt-get install -y sudo"]
+SHELL ["/bin/sh", "-c", "sudo apt install fortune-mod cowsay -y"]
 
 # Copy the wisecow.sh script to the container
 COPY . /usr/src/app
 
 # Make the script executable
-RUN chmod +x /wisecow.sh
+SHELL ["chmod", "+x", "/wisecow.sh"]
 
 # Expose the port on which the app runs
 EXPOSE 4499
 
 # Command to run the app
 CMD ["/app/wisecow.sh"]
+
