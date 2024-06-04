@@ -20,3 +20,4 @@ EXPOSE 4499
 # Command to run the app
 CMD ["/app/wisecow.sh"]
 
+
