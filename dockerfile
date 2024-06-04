@@ -5,8 +5,8 @@ FROM ubuntu:latest
 WORKDIR /usr/src/app
 
 # Install necessary dependencies
-RUN sudo apt-get install -y sudo
-RUN sudo apt install fortune-mod cowsay -y
+RUN /bin/sh -c sudo apt-get install -y
+RUN /bin/sh -c sudo apt install fortune-mod cowsay -y
 
 # Copy the wisecow.sh script to the container
 COPY . /usr/src/app
